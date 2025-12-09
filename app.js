@@ -1,46 +1,52 @@
-// INSERT YOUR API KEY AND CHANNEL ID HERE AFTER TESTING
 const API_KEY = "AIzaSyDrLTOjbOngG41SBgXe77P-ffMFIAQnWjg";
 const CHANNEL_ID = "UC5eNNOs7LjOnugFnqKJS8eA";
-
-// Load YouTube Iframe script
-const tag = document.createElement("script");
-tag.src = "https://www.youtube.com/iframe_api";
-document.body.appendChild(tag);
 
 let player;
 
 function onYouTubeIframeAPIReady() {
     player = new YT.Player("player", {
-        height: "300",
+        height: "400",
         width: "100%",
         videoId: "",
-        playerVars: { autoplay: 0 }
+        playerVars: { autoplay: 0, controls: 1 }
     });
 }
 
 async function loadVideos() {
-    const url = `https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&channelId=${CHANNEL_ID}&part=snippet&type=video&order=date&maxResults=50`;
+    const url = `
+        https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&channelId=${CHANNEL_ID}
+        &part=snippet,id&order=date&maxResults=50
+    `;
 
-    const response = await fetch(url);
-    const data = await response.json();
+    const res = await fetch(url);
+    const data = await res.json();
 
-    const videoList = document.getElementById("video-list");
+    const videoContainer = document.getElementById("video-list");
+    videoContainer.innerHTML = "";
+
+    let firstVideo = null;
 
     data.items.forEach(item => {
-        const videoId = item.id.videoId;
-        const title = item.snippet.title;
-        const thumbnail = item.snippet.thumbnails.medium.url;
+        if (!item.id.videoId) return;
+        if (item.snippet.title.includes("Shorts") || item.snippet.title.includes("#shorts")) return;
+
+        if (!firstVideo) firstVideo = item.id.videoId;
 
         const div = document.createElement("div");
         div.className = "video-item";
         div.innerHTML = `
-            <img class="thumbnail" src="${thumbnail}" />
-            <p>${title}</p>
+            <img class="thumbnail" src="${item.snippet.thumbnails.medium.url}">
+            <div class="title">${item.snippet.title}</div>
         `;
-        div.onclick = () => player.loadVideoById(videoId);
 
-        videoList.appendChild(div);
+        div.onclick = () => {
+            player.loadVideoById(item.id.videoId);
+        };
+
+        videoContainer.appendChild(div);
     });
+
+    if (firstVideo) player.loadVideoById(firstVideo);
 }
 
-loadVideos();
+window.onload = loadVideos;
