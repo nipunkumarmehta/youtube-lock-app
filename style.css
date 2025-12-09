@@ -1,65 +1,52 @@
 body {
-  margin: 0;
-  font-family: sans-serif;
-  background: #111;
-  color: white;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #000;
+    color: white;
 }
 
 header {
-  background: #202020;
-  padding: 12px;
-  font-size: 20px;
-  text-align: center;
-  font-weight: bold;
+    padding: 15px;
+    background: #111;
+    font-size: 22px;
+    text-align: center;
+    font-weight: bold;
 }
 
-#layout {
-  display: flex;
-  height: calc(100vh - 60px);
+.container {
+    display: flex;
+    gap: 10px;
+    padding: 15px;
 }
 
-#video-area {
-  flex: 3;
-  padding: 10px;
+.player-section {
+    flex: 2;
 }
 
-#player {
-  width: 100%;
-  height: 70vh;
-  background: black;
-  border-radius: 6px;
+.playlist-section {
+    flex: 1;
+    max-height: 85vh;
+    overflow-y: auto;
+    border-left: 2px solid #222;
+    padding-left: 10px;
 }
 
-#sidebar {
-  flex: 1;
-  border-left: 2px solid #333;
-  background: #181818;
-  overflow-y: auto;
-  padding: 10px;
+.video-item {
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #333;
 }
 
-#videoList {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+.video-item:hover {
+    background: #222;
 }
 
-#videoList li {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 12px;
-  cursor: pointer;
-  padding: 6px;
-  border-radius: 6px;
-  background: #222;
+.thumbnail {
+    width: 100%;
+    border-radius: 4px;
 }
 
-#videoList li:hover {
-  background: #333;
-}
-
-#videoList img {
-  width: 120px;
-  border-radius: 4px;
+.title {
+    font-size: 14px;
+    margin-top: 6px;
 }
